@@ -1,6 +1,7 @@
 import { CompassIcon, HomeIcon, SparkleIcon, SparklesIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 const Logo = () => {
     return (
@@ -16,7 +17,7 @@ const Logo = () => {
 };
 
 export default function Header() {
-    const isSignedIn = true; // Replace with actual authentication logic
+    const isSignedIn = false; // Replace with actual authentication logic
   return (
     <header className="sticky top-0 z-70 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="wrapper px-12">
@@ -43,32 +44,28 @@ export default function Header() {
                 </Link>
             </nav>
                 <div className="flex items-center gap-3">
-                    {isSignedIn ? (
-                        <>
-                            <Button asChild>
-                                <Link href="/submit">
-                                    <SparklesIcon className="size-4" />
-                                    Submit Project
-                                </Link>
-                            </Button>
-                            {/* clerk user */}
-                            <Button variant="ghost">
-                                <UserIcon className="size-4" />
-                            </Button>
-                        </>
-                        
-                    ) : (
-                        <>
-                            <Button variant="ghost">
+                    <Show when="signed-out">
+                        <SignInButton>
+                            <button className="text-sm font-medium px-4 h-10 sm:h-12  cursor-pointer">
                                 Sign In
-                            </Button>
+                            </button>
+                        </SignInButton>
+                        <SignUpButton>
                             <Button>
-                                Sign Up
+                            Sign Up
                             </Button>
-                        </>
-                        
-                    )}
-                </div>
+                        </SignUpButton>
+                    </Show>
+                    <Show when="signed-in">
+                        <Button asChild>
+                            <Link href="/submit">
+                                <SparklesIcon className="size-4" />
+                                Submit Project
+                            </Link>
+                            </Button>
+                        <UserButton />
+                    </Show>
+                </div> 
             
         </div>
       </div>
