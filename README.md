@@ -35,6 +35,7 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 | [Shadcn/ui](https://ui.shadcn.com) | latest | Pre-built UI components |
 | [Radix UI](https://www.radix-ui.com) | latest | Headless UI primitives |
 | [Lucide React](https://lucide.dev) | latest | Icons |
+| [Clerk](https://clerk.com) | 7 | Authentication & user management |
 
 ---
 
@@ -42,8 +43,20 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) v18 or higher
+- [Node.js](https://nodejs.org) v20 or higher (required by Clerk)
 - npm (comes with Node.js)
+- A [Clerk](https://clerk.com) account for authentication
+
+### Environment Variables
+
+Create a `.env.local` file in the root of the project and add your Clerk keys:
+
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+```
+
+You can find these in your [Clerk Dashboard](https://dashboard.clerk.com) under **API Keys**.
 
 ### Installation
 
@@ -55,7 +68,9 @@ cd IbuiltThis
 # 2. Install dependencies
 npm install
 
-# 3. Start the development server
+# 3. Add your Clerk environment variables (see above)
+
+# 4. Start the development server
 npm run dev
 ```
 
@@ -69,7 +84,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 ibuilthis-app/
 ├── app/                    # Next.js App Router pages
 │   ├── page.tsx            # Home / landing page
-│   ├── layout.tsx          # Root layout (fonts, metadata)
+│   ├── layout.tsx          # Root layout (ClerkProvider, fonts, metadata)
 │   ├── globals.css         # Global styles
 │   └── products/
 │       └── page.tsx        # Products listing page
@@ -80,6 +95,8 @@ ibuilthis-app/
 │   └── ui/                 # Base UI primitives (Button, Badge, Card)
 ├── lib/
 │   └── utils.ts            # Utility functions
+├── proxy.ts                # Clerk authentication middleware
+├── .env.local              # Environment variables (not committed)
 └── public/                 # Static assets
 ```
 
@@ -103,7 +120,7 @@ These features are planned and in progress:
 - [ ] `/submit` — Submit a new project page
 - [ ] `/explore` — Browse and filter all products
 - [ ] `/products/[id]` — Individual product detail page
-- [ ] User authentication (Sign In / Sign Up)
+- [x] User authentication (Clerk — Sign In / Sign Up / User Button)
 - [ ] Real product data (database integration)
 - [ ] Search and filtering
 
