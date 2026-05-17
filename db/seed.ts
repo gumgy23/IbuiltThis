@@ -19,7 +19,7 @@ async function main() {
             slug: product.slug,
             tagline: product.tagline,
             description: product.description,
-            websiteurl: product.websiteUrl,
+            websiteUrl: product.websiteUrl,
             tags: product.tags,
             voteCount: product.voteCount || 0,
             createdAt: product.createdAt,

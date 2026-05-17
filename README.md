@@ -19,7 +19,8 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 - **Recently Launched** — The latest products submitted to the platform
 - **Voting System** — Upvote and downvote products to surface the best work
 - **Product Tags** — Categorize products (SaaS, AI, Course, Pricing, etc.)
-- **Submit Project CTA** — Clear call-to-action for creators to share their own work
+- **Product Detail Pages** — Individual pages for each product at `/products/[id]`
+- **Submit a Product** — Authenticated form for creators to submit their work at `/submit`
 - **Responsive Design** — Works across all screen sizes
 
 ---
@@ -36,6 +37,9 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 | [Radix UI](https://www.radix-ui.com) | latest | Headless UI primitives |
 | [Lucide React](https://lucide.dev) | latest | Icons |
 | [Clerk](https://clerk.com) | 7 | Authentication & user management |
+| [Drizzle ORM](https://orm.drizzle.team) | latest | Type-safe database ORM |
+| [Neon](https://neon.tech) | latest | Serverless PostgreSQL database |
+| [Zod](https://zod.dev) | 4 | Schema validation |
 
 ---
 
@@ -46,17 +50,20 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 - [Node.js](https://nodejs.org) v20 or higher (required by Clerk)
 - npm (comes with Node.js)
 - A [Clerk](https://clerk.com) account for authentication
+- A [Neon](https://neon.tech) account for the PostgreSQL database
 
 ### Environment Variables
 
-Create a `.env.local` file in the root of the project and add your Clerk keys:
+Create a `.env.local` file in the root of the project and add your Clerk and database keys:
 
 ```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
 CLERK_SECRET_KEY=sk_test_...
+DATABASE_URL=postgresql://...
 ```
 
-You can find these in your [Clerk Dashboard](https://dashboard.clerk.com) under **API Keys**.
+- **Clerk keys** — found in your [Clerk Dashboard](https://dashboard.clerk.com) under **API Keys**
+- **DATABASE_URL** — found in your [Neon Console](https://console.neon.tech) under **Connection Details**
 
 ### Installation
 
@@ -68,9 +75,15 @@ cd IbuiltThis
 # 2. Install dependencies
 npm install
 
-# 3. Add your Clerk environment variables (see above)
+# 3. Add your environment variables (see above)
 
-# 4. Start the development server
+# 4. Push the database schema
+npx drizzle-kit push
+
+# 5. (Optional) Seed the database with sample data
+npx tsx db/seed.ts
+
+# 6. Start the development server
 npm run dev
 ```
 
@@ -82,22 +95,38 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 
 ```
 ibuilthis-app/
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx            # Home / landing page
-│   ├── layout.tsx          # Root layout (ClerkProvider, fonts, metadata)
-│   ├── globals.css         # Global styles
-│   └── products/
-│       └── page.tsx        # Products listing page
+├── app/                        # Next.js App Router pages
+│   ├── page.tsx                # Home / landing page
+│   ├── layout.tsx              # Root layout (ClerkProvider, fonts, metadata)
+│   ├── globals.css             # Global styles
+│   ├── products/
+│   │   ├── page.tsx            # Products listing page
+│   │   └── [id]/
+│   │       └── page.tsx        # Individual product detail page
+│   └── submit/
+│       └── page.tsx            # Submit a product page
 ├── components/
-│   ├── common/             # Shared UI components (Header, Footer, etc.)
-│   ├── landing-page/       # Landing page sections (Hero, Featured, Recent)
-│   ├── products/           # Product card components
-│   └── ui/                 # Base UI primitives (Button, Badge, Card)
+│   ├── common/                 # Shared UI components (Header, Footer, etc.)
+│   ├── forms/                  # Reusable form components
+│   ├── landing-page/           # Landing page sections (Hero, Featured, Recent)
+│   ├── products/               # Product card and submission form components
+│   └── ui/                     # Base UI primitives (Button, Badge, Card, Input, etc.)
+├── db/
+│   ├── schema.ts               # Drizzle database schema (products table)
+│   ├── index.ts                # Database connection (Neon + Drizzle)
+│   ├── data.ts                 # Static seed data
+│   └── seed.ts                 # Database seeding script
+├── drizzle/                    # Drizzle migration files
+├── drizzle.config.ts           # Drizzle ORM configuration
 ├── lib/
-│   └── utils.ts            # Utility functions
-├── proxy.ts                # Clerk authentication middleware
-├── .env.local              # Environment variables (not committed)
-└── public/                 # Static assets
+│   ├── utils.ts                # Utility functions
+│   └── products/
+│       ├── product-select.ts   # Database query helpers
+│       ├── product-validations.ts  # Zod validation schemas
+│       └── product-action.ts   # Server actions (submit product)
+├── proxy.ts                    # Clerk authentication middleware
+├── .env.local                  # Environment variables (not committed)
+└── public/                     # Static assets
 ```
 
 ---
@@ -105,24 +134,27 @@ ibuilthis-app/
 ## Available Scripts
 
 ```bash
-npm run dev      # Start development server (http://localhost:3000)
-npm run build    # Build for production
-npm start        # Start production server
-npm run lint     # Run ESLint
+npm run dev         # Start development server (http://localhost:3000)
+npm run build       # Build for production
+npm start           # Start production server
+npm run lint        # Run ESLint
+
+npx drizzle-kit push        # Push schema changes to the database
+npx drizzle-kit studio      # Open Drizzle Studio (visual DB browser)
+npx tsx db/seed.ts          # Seed the database with sample data
 ```
 
 ---
 
 ## Roadmap
 
-These features are planned and in progress:
-
-- [ ] `/submit` — Submit a new project page
-- [ ] `/explore` — Browse and filter all products
-- [ ] `/products/[id]` — Individual product detail page
 - [x] User authentication (Clerk — Sign In / Sign Up / User Button)
-- [ ] Real product data (database integration)
+- [x] `/submit` — Submit a new project page with validation and DB persistence
+- [x] `/products/[id]` — Individual product detail page
+- [x] Real product data (Drizzle ORM + Neon PostgreSQL)
+- [ ] `/explore` — Browse and filter all products
 - [ ] Search and filtering
+- [ ] Voting persisted to database
 
 ---
 

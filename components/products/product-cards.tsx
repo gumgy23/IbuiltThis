@@ -8,18 +8,14 @@ import {
 
  } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronUpIcon, StarIcon,  ChevronDownIcon } from "lucide-react";
+import { ChevronUpIcon, ChevronDownIcon, StarIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { InferSelectModel } from "drizzle-orm";
+import { products } from "@/db/schema";
 
-interface Product {
-    id: number;
-    name: string;
-    description: string;
-    tags: string[];
-    votes: number;
-    isFeatured: boolean;
-}
+
+type Product = InferSelectModel<typeof products>;
 
 export default function ProductCards({ product }: { 
     product: Product }) {
@@ -34,45 +30,48 @@ export default function ProductCards({ product }: {
                                 <CardTitle className="text-lg group-hover:text-primary transition-colors">
                                 {product.name}
                                 </CardTitle>
-                                {product.isFeatured && <Badge className="gap-1 bg-primary text-primary-foreground">
-                                    <StarIcon className="size-3 fill-current" />
-                                    Featured
-                                    </Badge>}
+                                {product.voteCount > 250 && (
+                                    <Badge className="gap-1
+                                    bg-primary text-primary-foreground">
+                                        <StarIcon className="size-3" />
+                                        Featured
+                                    </Badge>
+                                )}
                             </div>
-                            <CardDescription>{product.description}</CardDescription>
-                        </div>  
-                        {/* Vooting buttons */}
-                        <div className="flex flex-col items-center gap-1 shrink-0">
-                                    <Button 
-                                        variant="ghost" 
-                                        size="icon-sm" 
-                                        className={cn(
-                                            "h-8 w-8 text-primary",
-                                            hasVoted 
-                                            ? "bg-primary/10 text-primary hover:bg-primary/20" :
-                                            "hover:bg-primary/10 text-primary hover:text-primary")}
-                                        >
-                                        <ChevronUpIcon className="size-4" />
-                                    </Button>
-                                    <span className="text-sm font-semibold transition-colors text-foreground">
-                                        {product.votes}
-                                    </span>
-                                    <Button 
-                                        variant="ghost" 
-                                        size="icon-sm" 
-                                        className={cn(
-                                            "h-8 w-8 text-primary",
-                                            hasVoted 
-                                            ? "hover:bg-primary/20" :
-                                            "opacity-50 cursor-not-allowed")}
-                                        >
-                                        <ChevronDownIcon className="size-4" />
-                                    </Button>
+                        <CardDescription>{product.description}</CardDescription>
+                    </div>  
+                    {/* Vooting buttons */}
+                    <div className="flex flex-col items-center gap-1 shrink-0">
+                        <Button 
+                            variant="ghost" 
+                            size="icon-sm" 
+                            className={cn(
+                                "h-8 w-8 text-primary",
+                                hasVoted 
+                                ? "bg-primary/10 text-primary hover:bg-primary/20" :
+                                "hover:bg-primary/10 text-primary hover:text-primary")}
+                        >
+                            <ChevronUpIcon className="size-4" />
+                        </Button>
+                        <span className="text-sm font-semibold transition-colors text-foreground">
+                            {product.voteCount}
+                        </span>
+                        <Button 
+                            variant="ghost" 
+                            size="icon-sm" 
+                            className={cn(
+                                "h-8 w-8 text-primary",
+                                hasVoted 
+                                ? "hover:bg-primary/20" :
+                                "opacity-50 cursor-not-allowed")}
+                        >
+                            <ChevronDownIcon className="size-4" />
+                        </Button>
                         </div>
                     </div>
                 </CardHeader>
                 <CardFooter className="flex items-center gap-2">
-                    {product.tags.map((tag) => (
+                    {product.tags?.map((tag) => (
                         <Badge variant="secondary" key={tag}>
                             {tag}
                         </Badge>
