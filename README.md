@@ -19,7 +19,7 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 - **Recently Launched** — The latest products submitted to the platform
 - **Voting System** — Upvote and downvote products to surface the best work
 - **Product Tags** — Categorize products (SaaS, AI, Course, Pricing, etc.)
-- **Product Detail Pages** — Individual pages for each product at `/products/[id]`
+- **Product Detail Pages** — Individual pages for each product at `/products/[slug]`
 - **Submit a Product** — Authenticated form for creators to submit their work at `/submit`
 - **Responsive Design** — Works across all screen sizes
 
@@ -151,7 +151,7 @@ npx tsx db/seed.ts          # Seed the database with sample data
 
 - [x] User authentication (Clerk — Sign In / Sign Up / User Button)
 - [x] `/submit` — Submit a new project page with validation and DB persistence
-- [x] `/products/[id]` — Individual product detail page
+- [x] `/products/[slug]` — Individual product detail page with SSG
 - [x] Real product data (Drizzle ORM + Neon PostgreSQL)
 - [ ] `/explore` — Browse and filter all products
 - [ ] Search and filtering
