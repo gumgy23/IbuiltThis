@@ -101,16 +101,16 @@ ibuilthis-app/
 │   ├── globals.css             # Global styles
 │   ├── products/
 │   │   ├── page.tsx            # Products listing page
-│   │   └── [id]/
-│   │       └── page.tsx        # Individual product detail page
+│   │   └── [slug]/
+│   │       └── page.tsx        # Individual product detail page (SSG with slug-based routing)
 │   └── submit/
 │       └── page.tsx            # Submit a product page
 ├── components/
-│   ├── common/                 # Shared UI components (Header, Footer, etc.)
-│   ├── forms/                  # Reusable form components
+│   ├── common/                 # Shared UI components (Header, Footer, SectionHeader)
+│   ├── forms/                  # Reusable form components (FormField)
 │   ├── landing-page/           # Landing page sections (Hero, Featured, Recent)
-│   ├── products/               # Product card and submission form components
-│   └── ui/                     # Base UI primitives (Button, Badge, Card, Input, etc.)
+│   ├── products/               # Product components (ProductCards, VotingButton, ProductSkeleton, ProductSubmitForm)
+│   └── ui/                     # Base UI primitives (Button, Badge, Card, Input, Skeleton, etc.)
 ├── db/
 │   ├── schema.ts               # Drizzle database schema (products table)
 │   ├── index.ts                # Database connection (Neon + Drizzle)
@@ -121,9 +121,10 @@ ibuilthis-app/
 ├── lib/
 │   ├── utils.ts                # Utility functions
 │   └── products/
-│       ├── product-select.ts   # Database query helpers
+│       ├── product-select.ts   # Database query helpers (getAllProducts, getFeaturedProducts, getProductbySlug, etc.)
 │       ├── product-validations.ts  # Zod validation schemas
 │       └── product-action.ts   # Server actions (submit product)
+├── types/                      # TypeScript type definitions
 ├── proxy.ts                    # Clerk authentication middleware
 ├── .env.local                  # Environment variables (not committed)
 └── public/                     # Static assets

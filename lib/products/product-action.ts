@@ -5,12 +5,11 @@ import { productSchema } from "./product-validations";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import z from "zod";
+import { FormState } from "@/types";
+import { eq, sql } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
-type FormState = {
-    success: boolean;
-    errors?: Record<string, string[] | undefined>;
-    message: string;
-}
+
 
 export const addProductAction = async (prevState: FormState,
     formData: FormData): Promise<FormState> => {
@@ -18,12 +17,19 @@ export const addProductAction = async (prevState: FormState,
 
     try{
 
-        const { userId } = await auth();
+        const { userId, orgId } = await auth();
 
         if (!userId) {
             return {
                 success: false,
                 message: "You must be signed in to submit a product"
+            };
+        }
+
+         if (!orgId) {
+            return {
+                success: false,
+                message: "You must be a member of an organization to submit a product"
             };
         }
 
@@ -61,6 +67,7 @@ export const addProductAction = async (prevState: FormState,
                     tags: tagsArray, 
                     status: "pending", 
                     submittedBy: userEmail,
+                    organizationId: orgId,
                     userId } );
 
         return { success: true, message: "Product submitted successfully! it will be reviewed shortly" };
@@ -79,6 +86,81 @@ export const addProductAction = async (prevState: FormState,
         return {
             success: false,
             message: "Failed to submit product"
+        };
+    }
+}
+
+
+export const upvoteProductAction = async (
+    productId: number
+) => {
+    try {
+        const { userId } = await auth();
+
+        if (!userId) {
+            return {
+                success: false,
+                message: "You must be signed in to vote"
+            };
+        }
+
+        await db.update(products)
+                .set({
+                    voteCount: sql`${products.voteCount} + 1`
+                })
+                .where(eq(products.id, productId));
+
+        // Revalidate the homepage and the product detail page to reflect the updated vote count
+        revalidatePath("/");
+        revalidatePath(`/products/${productId}`);
+
+        return {
+            success: true,
+            message: "Product upvoted successfully",
+        };
+
+    } catch (err) {
+        console.error(err);
+        return {
+            success: false,
+            message: "Failed to upvote product",
+        };
+    }
+}
+
+export const downvoteProductAction = async (
+    productId: number
+) => {
+    try {
+        const { userId } = await auth();
+
+        if (!userId) {
+            return {
+                success: false,
+                message: "You must be signed in to vote"
+            };
+        }
+
+        await db.update(products)
+                .set({
+                    voteCount: sql`${products.voteCount} - 1`
+                })
+                .where(eq(products.id, productId));
+
+        // Revalidate the homepage and the product detail page to reflect the updated vote count
+        revalidatePath("/");
+        revalidatePath(`/products/${productId}`);
+
+        return {
+            success: true,
+            message: "Product downvoted successfully",
+        };
+
+    } catch (err) {
+        console.error(err);
+        return {
+            success: false,
+            message: "Failed to downvote product",
         };
     }
 }

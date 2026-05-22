@@ -9,8 +9,7 @@ export async function getFeaturedProducts() {
         .select()
         .from(products)
         .where(and(eq(products.status, "approved"), gt(products.voteCount, 250)))
-        .orderBy(desc(products.voteCount)
-    );
+        .orderBy(desc(products.voteCount));
 
     return productsData; 
 }
@@ -21,8 +20,7 @@ export async function getAllProducts() {
         .select()
         .from(products)
         .where(eq(products.status, "approved"))
-        .orderBy(desc(products.voteCount)
-    );
+        .orderBy(desc(products.voteCount));
 
     return productsData; 
 }
@@ -38,4 +36,14 @@ export async function getRecentProducts() {
       product.createdAt &&
       new Date(product.createdAt.toISOString()) >= oneWeekAgo
   );
+}
+
+export async function getProductbySlug(slug: string) {
+    const productData = await db
+        .select()
+        .from(products)
+        .where(eq(products.slug, slug))
+        .limit(1);  
+        
+    return productData?.[0] ?? null; // Return the first (and only) product found
 }
