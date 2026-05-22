@@ -17,6 +17,8 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 - **Hero Section** — Bold landing page with platform stats (projects shared, active creators, monthly visitors)
 - **Featured Products** — Curated top picks from the community, complete with descriptions, tags, and vote counts
 - **Recently Launched** — The latest products submitted to the platform
+- **Explore Page** — Browse all approved products at `/explore` with live search and sort
+- **Search & Filter** — Client-side search by product name and sort by trending (votes) or most recent
 - **Voting System** — Upvote and downvote products to surface the best work
 - **Product Tags** — Categorize products (SaaS, AI, Course, Pricing, etc.)
 - **Product Detail Pages** — Individual pages for each product at `/products/[slug]`
@@ -99,8 +101,9 @@ ibuilthis-app/
 │   ├── page.tsx                # Home / landing page
 │   ├── layout.tsx              # Root layout (ClerkProvider, fonts, metadata)
 │   ├── globals.css             # Global styles
+│   ├── explore/
+│   │   └── page.tsx            # Explore all products page (search + sort)
 │   ├── products/
-│   │   ├── page.tsx            # Products listing page
 │   │   └── [slug]/
 │   │       └── page.tsx        # Individual product detail page (SSG with slug-based routing)
 │   └── submit/
@@ -109,7 +112,7 @@ ibuilthis-app/
 │   ├── common/                 # Shared UI components (Header, Footer, SectionHeader)
 │   ├── forms/                  # Reusable form components (FormField)
 │   ├── landing-page/           # Landing page sections (Hero, Featured, Recent)
-│   ├── products/               # Product components (ProductCards, VotingButton, ProductSkeleton, ProductSubmitForm)
+│   ├── products/               # Product components (ProductCards, ProductExplorer, VotingButton, ProductSkeleton, ProductSubmitForm)
 │   └── ui/                     # Base UI primitives (Button, Badge, Card, Input, Skeleton, etc.)
 ├── db/
 │   ├── schema.ts               # Drizzle database schema (products table)
@@ -153,8 +156,8 @@ npx tsx db/seed.ts          # Seed the database with sample data
 - [x] `/submit` — Submit a new project page with validation and DB persistence
 - [x] `/products/[slug]` — Individual product detail page with SSG
 - [x] Real product data (Drizzle ORM + Neon PostgreSQL)
-- [ ] `/explore` — Browse and filter all products
-- [ ] Search and filtering
+- [x] `/explore` — Browse all products with client-side search and sort
+- [x] Search by product name and sort by trending / most recent
 - [ ] Voting persisted to database
 
 ---

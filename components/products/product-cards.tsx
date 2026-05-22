@@ -11,15 +11,12 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronUpIcon, ChevronDownIcon, StarIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { InferSelectModel } from "drizzle-orm";
-import { products } from "@/db/schema";
 import VotingButton from "./voting-button";
+import { ProductType } from "@/types";
 
-
-type Product = InferSelectModel<typeof products>;
 
 export default function ProductCards({ product }: { 
-    product: Product }) {
+    product: ProductType }) {
         const hasVoted = false; // Replace with actual voting logic
     return (
        <Link href={`/products/${product.slug}`}>
