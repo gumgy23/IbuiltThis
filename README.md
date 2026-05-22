@@ -124,7 +124,7 @@ ibuilthis-app/
 ├── lib/
 │   ├── utils.ts                # Utility functions
 │   └── products/
-│       ├── product-select.ts   # Database query helpers (getAllProducts, getFeaturedProducts, getProductbySlug, etc.)
+│       ├── product-select.ts   # Database query helpers (getAllApprovedProducts, getFeaturedProducts, getProductbySlug, etc.)
 │       ├── product-validations.ts  # Zod validation schemas
 │       └── product-action.ts   # Server actions (submit product)
 ├── types/                      # TypeScript type definitions

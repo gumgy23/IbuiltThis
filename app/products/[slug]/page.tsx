@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/common/section-header";
 import VotingButton from "@/components/products/voting-button";
 import {
-  getAllProducts,
+  getAllApprovedProducts,
   getProductbySlug,
 } from "@/lib/products/product-select";
 import {
@@ -18,7 +18,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export const generateStaticParams = async () => {
-  const products = await getAllProducts();
+  const products = await getAllApprovedProducts();
   return products.map((product) => ({
     slug: product.slug.toString(),
   }));
