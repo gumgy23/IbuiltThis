@@ -126,7 +126,7 @@ ibuilthis-app/
 │   └── submit/
 │       └── page.tsx            # Submit a product page (requires org membership)
 ├── components/
-│   ├── admin/                  # Admin-specific components (AdminProductCard, AdminActions, StatsCard)
+│   ├── admin/                  # Admin-specific components (AdminProductCard, AdminActions, AdminDelete, StatsCard)
 │   ├── common/                 # Shared UI components (Header, Footer, SectionHeader, CustomUserButton)
 │   ├── forms/                  # Reusable form components (FormField)
 │   ├── landing-page/           # Landing page sections (Hero, Featured, Recent)
@@ -142,7 +142,7 @@ ibuilthis-app/
 ├── lib/
 │   ├── utils.ts                # Utility functions
 │   ├── admin/
-│   │   └── admin-action.tsx    # Admin server actions (approveProductAction, rejectProductAction)
+│   │   └── admin-action.tsx    # Admin server actions (approveProductAction, rejectProductAction, deleteProductAction)
 │   └── products/
 │       ├── product-select.ts   # Database query helpers (getAllApprovedProducts, getAllProducts, getFeaturedProducts, getProductbySlug, etc.)
 │       ├── product-validations.ts  # Zod validation schemas
@@ -183,7 +183,7 @@ npx tsx db/seed.ts          # Seed the database with sample data
 - [x] `/admin` — Admin dashboard with product moderation (approve / reject)
 - [x] Admin access via Clerk public metadata (`isAdmin: true`)
 - [x] Custom `UserButton` with organization switcher and admin panel shortcut
-- [ ] Delete product from admin dashboard
+- [x] Delete product from admin dashboard
 - [ ] User-specific voting (prevent duplicate votes)
 
 ---

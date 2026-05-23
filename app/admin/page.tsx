@@ -4,8 +4,6 @@ import { redirect } from "next/navigation";
 import SectionHeader from "@/components/common/section-header";
 import StatsCard from "@/components/admin/stats-card";
 import { getAllProducts } from "@/lib/products/product-select";
-import Product from "../products/[slug]/page";
-import ProductCards from "@/components/products/product-cards";
 import AdminProductCard from "@/components/admin/admin-product-card";
 import EmptyState from "@/components/common/empty-state";
 

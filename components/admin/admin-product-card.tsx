@@ -5,6 +5,8 @@ import { Button } from "../ui/button";
 import { TrashIcon } from "lucide-react";
 import AdminActions from "./admin-actions";
 import { cn } from "@/lib/utils";
+import { deleteProductAction } from "@/lib/admin/admin-action";
+import AdminDelete from "./admin-delete";
 
 
 
@@ -13,7 +15,14 @@ export default function AdminProductCard({
 }: { 
     product: ProductType
 }) {
+    const handleDelete = async () => {
+            // Implement delete logic here
+           
+            await deleteProductAction(product.id);
+           
+    }
     return (
+        
         <Card className="border rounded-lg p-6
             bg-background hover:shadow-md transition-shadow">
                 
@@ -64,10 +73,11 @@ export default function AdminProductCard({
                                 
                             </CardDescription>
                             <CardFooter>
-                                <Button variant="outline">
+                                <AdminDelete productId={product.id} />
+                                {/* <Button variant="outline" onClick={handleDelete}>
                                     <TrashIcon className="size-4" />
                                     Delete
-                                </Button>
+                                </Button> */}
                             </CardFooter>
                         </div>
                         <div className="lg:shrink-0">

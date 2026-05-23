@@ -24,6 +24,7 @@ export default function AdminActions({
         await rejectProductAction(productId);
         
     }
+    
 
     return (
        <div className="space-y-2">
