@@ -22,14 +22,16 @@ export const addProductAction = async (prevState: FormState,
         if (!userId) {
             return {
                 success: false,
-                message: "You must be signed in to submit a product"
+                message: "You must be signed in to submit a product",
+                errors: undefined
             };
         }
 
          if (!orgId) {
             return {
                 success: false,
-                message: "You must be a member of an organization to submit a product"
+                message: "You must be a member of an organization to submit a product",
+                errors: undefined
             };
         }
 
@@ -70,7 +72,11 @@ export const addProductAction = async (prevState: FormState,
                     organizationId: orgId,
                     userId } );
 
-        return { success: true, message: "Product submitted successfully! it will be reviewed shortly" };
+        return { 
+            success: true, 
+            message: "Product submitted successfully! it will be reviewed shortly",
+            errors: undefined
+        };
 
     } catch (err) {
         console.error(err);
@@ -85,7 +91,8 @@ export const addProductAction = async (prevState: FormState,
         
         return {
             success: false,
-            message: "Failed to submit product"
+            message: "Failed to submit product",
+            errors: undefined
         };
     }
 }
@@ -100,7 +107,8 @@ export const upvoteProductAction = async (
         if (!userId) {
             return {
                 success: false,
-                message: "You must be signed in to vote"
+                message: "You must be signed in to vote",
+                errors: undefined
             };
         }
 
@@ -117,6 +125,7 @@ export const upvoteProductAction = async (
         return {
             success: true,
             message: "Product upvoted successfully",
+            errors: undefined
         };
 
     } catch (err) {
@@ -124,6 +133,7 @@ export const upvoteProductAction = async (
         return {
             success: false,
             message: "Failed to upvote product",
+            errors: err
         };
     }
 }
@@ -137,7 +147,8 @@ export const downvoteProductAction = async (
         if (!userId) {
             return {
                 success: false,
-                message: "You must be signed in to vote"
+                message: "You must be signed in to vote",
+                errors: undefined
             };
         }
 
@@ -154,6 +165,7 @@ export const downvoteProductAction = async (
         return {
             success: true,
             message: "Product downvoted successfully",
+            errors: undefined
         };
 
     } catch (err) {
@@ -161,6 +173,7 @@ export const downvoteProductAction = async (
         return {
             success: false,
             message: "Failed to downvote product",
+            errors: err
         };
     }
 }

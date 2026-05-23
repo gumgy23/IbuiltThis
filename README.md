@@ -116,6 +116,7 @@ ibuilthis-app/
 │   ├── layout.tsx              # Root layout (ClerkProvider, fonts, metadata)
 │   ├── globals.css             # Global styles
 │   ├── admin/
+│   │   ├── layout.tsx          # Admin layout with Suspense boundary
 │   │   └── page.tsx            # Admin dashboard (approve/reject products, view stats)
 │   ├── explore/
 │   │   └── page.tsx            # Explore all products page (search + sort)
@@ -141,7 +142,7 @@ ibuilthis-app/
 ├── lib/
 │   ├── utils.ts                # Utility functions
 │   ├── admin/
-│   │   └── admin-action.ts     # Admin server actions (approveProductAction, rejectProductAction)
+│   │   └── admin-action.tsx    # Admin server actions (approveProductAction, rejectProductAction)
 │   └── products/
 │       ├── product-select.ts   # Database query helpers (getAllApprovedProducts, getAllProducts, getFeaturedProducts, getProductbySlug, etc.)
 │       ├── product-validations.ts  # Zod validation schemas

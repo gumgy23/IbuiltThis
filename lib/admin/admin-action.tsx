@@ -17,17 +17,18 @@ export const approveProductAction = async (productId: ProductType["id"]) => {
 
         return { 
             success: true, 
-            message: "Product approved successfully" 
+            message: "Product approved successfully",
+            error: undefined
         };
     }
     catch (error) {
         console.error("Error approving product:", error);
         return { 
             success: false, 
-            message: "Failed to approve product" 
+            message: "Failed to approve product",
+            error: error
         };
     }
-    
 }
 
 export const rejectProductAction = async (productId: ProductType["id"]) => {
@@ -41,14 +42,16 @@ export const rejectProductAction = async (productId: ProductType["id"]) => {
 
         return { 
             success: true, 
-            message: "Product rejected successfully" 
+            message: "Product rejected successfully", 
+            error: undefined
         };
     }
     catch (error) {
         console.error("Error rejecting product:", error);
         return { 
             success: false, 
-            message: "Failed to reject product" 
+            message: "Failed to reject product",
+            error: error
         };
     }
 }
