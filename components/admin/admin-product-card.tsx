@@ -71,7 +71,7 @@ export default function AdminProductCard({
                             </CardFooter>
                         </div>
                         <div className="lg:shrink-0">
-                            <AdminActions status={product.status ?? ""} />
+                            <AdminActions status={product.status ?? ""} productId={product.id} />
                         </div>
                 </div>
         </Card>

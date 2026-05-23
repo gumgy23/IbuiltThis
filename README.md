@@ -22,7 +22,11 @@ Whether you shipped an AI tool, a SaaS product, a course, or a side project — 
 - **Voting System** — Upvote and downvote products to surface the best work
 - **Product Tags** — Categorize products (SaaS, AI, Course, Pricing, etc.)
 - **Product Detail Pages** — Individual pages for each product at `/products/[slug]`
-- **Submit a Product** — Authenticated form for creators to submit their work at `/submit`
+- **Submit a Product** — Authenticated form for creators to submit their work at `/submit` (requires an organization)
+- **Organization Support** — Creators must belong to a Clerk organization to submit products; manage org via the user profile menu
+- **Admin Dashboard** — Protected page at `/admin` for managing all submitted products (approve, reject, view stats)
+- **Product Moderation** — Admins can approve or reject pending submissions; status badges distinguish pending / approved / rejected
+- **Admin User Button** — Custom Clerk `UserButton` with quick links to organization management and the admin panel
 - **Responsive Design** — Works across all screen sizes
 
 ---
@@ -67,6 +71,16 @@ DATABASE_URL=postgresql://...
 - **Clerk keys** — found in your [Clerk Dashboard](https://dashboard.clerk.com) under **API Keys**
 - **DATABASE_URL** — found in your [Neon Console](https://console.neon.tech) under **Connection Details**
 
+### Granting Admin Access
+
+Admin privileges are controlled via Clerk's **Public Metadata**. To make a user an admin:
+
+1. Go to your [Clerk Dashboard](https://dashboard.clerk.com) → **Users**
+2. Select the user → **Metadata** tab → **Public**
+3. Add `{ "isAdmin": true }` and save
+
+Only users with `isAdmin: true` can access the `/admin` dashboard.
+
 ### Installation
 
 ```bash
@@ -101,15 +115,18 @@ ibuilthis-app/
 │   ├── page.tsx                # Home / landing page
 │   ├── layout.tsx              # Root layout (ClerkProvider, fonts, metadata)
 │   ├── globals.css             # Global styles
+│   ├── admin/
+│   │   └── page.tsx            # Admin dashboard (approve/reject products, view stats)
 │   ├── explore/
 │   │   └── page.tsx            # Explore all products page (search + sort)
 │   ├── products/
 │   │   └── [slug]/
 │   │       └── page.tsx        # Individual product detail page (SSG with slug-based routing)
 │   └── submit/
-│       └── page.tsx            # Submit a product page
+│       └── page.tsx            # Submit a product page (requires org membership)
 ├── components/
-│   ├── common/                 # Shared UI components (Header, Footer, SectionHeader)
+│   ├── admin/                  # Admin-specific components (AdminProductCard, AdminActions, StatsCard)
+│   ├── common/                 # Shared UI components (Header, Footer, SectionHeader, CustomUserButton)
 │   ├── forms/                  # Reusable form components (FormField)
 │   ├── landing-page/           # Landing page sections (Hero, Featured, Recent)
 │   ├── products/               # Product components (ProductCards, ProductExplorer, VotingButton, ProductSkeleton, ProductSubmitForm)
@@ -123,10 +140,12 @@ ibuilthis-app/
 ├── drizzle.config.ts           # Drizzle ORM configuration
 ├── lib/
 │   ├── utils.ts                # Utility functions
+│   ├── admin/
+│   │   └── admin-action.ts     # Admin server actions (approveProductAction, rejectProductAction)
 │   └── products/
-│       ├── product-select.ts   # Database query helpers (getAllApprovedProducts, getFeaturedProducts, getProductbySlug, etc.)
+│       ├── product-select.ts   # Database query helpers (getAllApprovedProducts, getAllProducts, getFeaturedProducts, getProductbySlug, etc.)
 │       ├── product-validations.ts  # Zod validation schemas
-│       └── product-action.ts   # Server actions (submit product)
+│       └── product-action.ts   # Server actions (submit product, upvote, downvote)
 ├── types/                      # TypeScript type definitions
 ├── proxy.ts                    # Clerk authentication middleware
 ├── .env.local                  # Environment variables (not committed)
@@ -158,7 +177,13 @@ npx tsx db/seed.ts          # Seed the database with sample data
 - [x] Real product data (Drizzle ORM + Neon PostgreSQL)
 - [x] `/explore` — Browse all products with client-side search and sort
 - [x] Search by product name and sort by trending / most recent
-- [ ] Voting persisted to database
+- [x] Voting persisted to database (upvote / downvote)
+- [x] Organization requirement for product submissions
+- [x] `/admin` — Admin dashboard with product moderation (approve / reject)
+- [x] Admin access via Clerk public metadata (`isAdmin: true`)
+- [x] Custom `UserButton` with organization switcher and admin panel shortcut
+- [ ] Delete product from admin dashboard
+- [ ] User-specific voting (prevent duplicate votes)
 
 ---
 

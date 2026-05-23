@@ -110,9 +110,9 @@ export const upvoteProductAction = async (
                 })
                 .where(eq(products.id, productId));
 
-        // Revalidate the homepage and the product detail page to reflect the updated vote count
         revalidatePath("/");
-        revalidatePath(`/products/${productId}`);
+        revalidatePath("/explore");
+        revalidatePath("/products/[slug]", "page");
 
         return {
             success: true,
@@ -147,9 +147,9 @@ export const downvoteProductAction = async (
                 })
                 .where(eq(products.id, productId));
 
-        // Revalidate the homepage and the product detail page to reflect the updated vote count
         revalidatePath("/");
-        revalidatePath(`/products/${productId}`);
+        revalidatePath("/explore");
+        revalidatePath("/products/[slug]", "page");
 
         return {
             success: true,
